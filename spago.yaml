@@ -1,0 +1,38 @@
+package:
+  name: "foreign"
+  dependencies:
+    - either
+    - functions
+    - identity
+    - integers
+    - lists
+    - maybe
+    - prelude
+    - strings
+    - transformers
+
+  test:
+    main: Test.Main
+    dependencies:
+      - assert
+      - console
+      - effect
+
+workspace:
+  packageSet:
+    registry: 77.7.0
+  extraPackages:
+    assert:
+      path: "../purust-assert"
+    console:
+      path: "../purust-console"
+    effect:
+      path: "../purust-effect"
+    prelude:
+      path: "../purust-prelude"
+    functions:
+      path: "../purust-functions"
+    integers:
+      path: "../purust-integers"
+    strings:
+      path: "../purust-strings"
