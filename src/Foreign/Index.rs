@@ -22,7 +22,7 @@ fn purust_foreign_property(key: crate::UnknownType, value: &crate::UnknownType) 
 
 pub fn Foreign_Index_unsafeReadPropImpl() -> crate::UnknownType {
     crate::Value::Func4(purust_core::Func4::Static(|failure, success, key, value| {
-        if matches!(value.resolve(), crate::Value::Unit) {
+        if matches!(value.resolve(), crate::Value::Unit | crate::Value::Null) {
             failure
         } else {
             success.unwrap_func1()(purust_foreign_property(key, &value))
