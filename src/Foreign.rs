@@ -1,6 +1,7 @@
 pub fn Foreign_tagOf(value: crate::UnknownType) -> String {
     match value.resolve() {
         crate::Value::Unit => "Undefined",
+        crate::Value::Null => "Null",
         crate::Value::Int(_) | crate::Value::Number(_) => "Number",
         crate::Value::String(_) | crate::Value::Char(_) => "String",
         crate::Value::Bool(_) => "Boolean",
@@ -9,6 +10,18 @@ pub fn Foreign_tagOf(value: crate::UnknownType) -> String {
         _ if value.__purust_record_fields().is_some() => "Object",
         _ => "Function",
     }.to_owned()
+}
+
+pub fn Foreign_isNull(value: crate::UnknownType) -> bool {
+    matches!(value.resolve(), purust_core::Value::Null)
+}
+
+pub fn Foreign_isUndefined(value: crate::UnknownType) -> bool {
+    matches!(value.resolve(), purust_core::Value::Unit)
+}
+
+pub fn Foreign_isArray(value: crate::UnknownType) -> bool {
+    matches!(value.resolve(), purust_core::Value::Array(_))
 }
 
 pub fn Foreign_typeOf(value: crate::UnknownType) -> String {
