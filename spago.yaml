@@ -14,14 +14,22 @@ package:
   test:
     main: Test.Main
     dependencies:
+      - arrays
       - assert
       - console
       - effect
 
 workspace:
+  backend:
+    cmd: ../purust/bin/purust
+    args: [--main, Test.Main, --source, output, --out, output/purust_output]
   packageSet:
     registry: 77.7.0
   extraPackages:
+    arrays:
+      path: "../purust-arrays"
+    unsafe-coerce:
+      path: "../purust-unsafe-coerce"
     assert:
       path: "../purust-assert"
     console:
