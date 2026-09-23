@@ -134,9 +134,17 @@ foreign import isUndefined :: Foreign -> Boolean
 -- | Test whether a foreign value is an array
 foreign import isArray :: Foreign -> Boolean
 
+foreign import readStringImpl :: Foreign -> String
+
 -- | Attempt to coerce a foreign value to a `String`.
+-- |
+-- | `tagOf` reports native single-character carriers as `"String"` (like
+-- | JavaScript), so the conversion happens in the FFI instead of a raw
+-- | `unsafeReadTagged` coerce.
 readString :: forall m. Monad m => Foreign -> ExceptT (NonEmptyList ForeignError) m String
-readString = unsafeReadTagged "String"
+readString value
+  | tagOf value == "String" = pure (readStringImpl value)
+  | otherwise = fail $ TypeMismatch "String" (tagOf value)
 
 -- | Attempt to coerce a foreign value to a `Char`.
 readChar :: forall m. Monad m => Foreign -> ExceptT (NonEmptyList ForeignError) m Char

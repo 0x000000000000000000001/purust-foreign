@@ -1,3 +1,15 @@
+/// JavaScript strings and single-character values are the same value. Native
+/// chars keep a dedicated carrier, so string readers materialize the string
+/// form instead of coercing the char carrier to a Rust `String`.
+pub fn Foreign_readStringImpl(value: crate::UnknownType) -> String {
+    match value.resolve() {
+        crate::Value::Char(character) => {
+            purust_core::purust_string_from_utf8(&character.to_string())
+        }
+        _ => value.unwrap_string(),
+    }
+}
+
 pub fn Foreign_tagOf(value: crate::UnknownType) -> String {
     match value.resolve() {
         crate::Value::Unit => "Undefined",
