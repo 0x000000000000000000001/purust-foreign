@@ -65,4 +65,8 @@ if ! grep -q 'Tests passed' output/actual.stdout; then
   echo "[FAILED] Foreign tests did not reach the final marker" >&2
   exit 1
 fi
-echo "Summary: the native Foreign tests passed."
+echo "=== Checking Rust Foreign FFI directly ==="
+mkdir -p output/purust_output/Purs_Test_Main/tests
+cp test/ffi.rs output/purust_output/Purs_Test_Main/tests/ffi.rs
+cargo test --manifest-path output/purust_output/Purs_Test_Main/Cargo.toml --test ffi
+echo "Summary: the native Foreign tests passed (PureScript suite and Rust FFI checks)."
