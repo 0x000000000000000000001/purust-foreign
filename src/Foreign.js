@@ -17,3 +17,9 @@ export function isUndefined(value) {
 export const isArray = Array.isArray || function (value) {
   return Object.prototype.toString.call(value) === "[object Array]";
 };
+
+// Native single-character carriers are plain strings in JavaScript, so the
+// string reader is the identity once `tagOf` has accepted the value.
+export function readStringImpl(value) {
+  return value;
+}
