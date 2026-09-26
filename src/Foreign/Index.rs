@@ -20,6 +20,8 @@ fn purust_foreign_property(key: crate::UnknownType, value: &crate::UnknownType) 
     let property = match value.resolve() {
         crate::Value::Array(items) if key == "length" => Some(crate::mk_int(items.len() as i64)),
         crate::Value::Array(items) => index.and_then(|i| items.get(i).cloned()),
+        crate::Value::IntArray(items) if key == "length" => Some(crate::mk_int(items.len() as i64)),
+        crate::Value::IntArray(items) => index.and_then(|i| items.get(i)).map(|x| crate::mk_int(*x)),
         crate::Value::String(text) if key == "length" => Some(crate::mk_int(text.chars().count() as i64)),
         crate::Value::String(text) => index.and_then(|i| text.chars().nth(i)).map(|c| crate::mk_string(&c.to_string())),
         crate::Value::Class(native) => native.downcast_ref::<Rc<purust_core::SharedRecord>>()
@@ -46,8 +48,8 @@ pub fn Foreign_Index_unsafeReadPropImpl() -> crate::UnknownType {
 fn has_own_property(key: crate::UnknownType, value: &crate::UnknownType) -> bool {
     let key = property_key(key);
     match value.resolve() {
-        crate::Value::Array(items) => {
-            key == "length" || array_index(&key).map_or(false, |index| index < items.len())
+        crate::Value::Array(_) | crate::Value::IntArray(_) => {
+            key == "length" || array_index(&key).map_or(false, |index| index < value.array_len())
         }
         crate::Value::String(text) => {
             key == "length" || array_index(&key).map_or(false, |index| index < text.chars().count())

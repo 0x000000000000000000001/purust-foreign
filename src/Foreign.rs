@@ -17,7 +17,7 @@ pub fn Foreign_tagOf(value: crate::UnknownType) -> String {
         crate::Value::Int(_) | crate::Value::Number(_) => "Number",
         crate::Value::String(_) | crate::Value::Char(_) => "String",
         crate::Value::Bool(_) => "Boolean",
-        crate::Value::Array(_) => "Array",
+        crate::Value::Array(_) | crate::Value::IntArray(_) => "Array",
         // JS.BigInt re-exports this exact pinned native type. Depend on its
         // carrier crate, not Purs_JS_BigInt, to keep Foreign usable on its own.
         crate::Value::Class(native)
@@ -37,7 +37,7 @@ pub fn Foreign_isUndefined(value: crate::UnknownType) -> bool {
 }
 
 pub fn Foreign_isArray(value: crate::UnknownType) -> bool {
-    matches!(value.resolve(), purust_core::Value::Array(_))
+    value.is_array()
 }
 
 pub fn Foreign_typeOf(value: crate::UnknownType) -> String {
